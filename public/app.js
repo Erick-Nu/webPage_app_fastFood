@@ -1,6 +1,3 @@
-const SUPABASE_URL = 'TU_URL_DE_SUPABASE';
-const SUPABASE_KEY = 'TU_ANON_KEY';
-
 document.getElementById('resetForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -15,6 +12,7 @@ document.getElementById('resetForm').addEventListener('submit', async (e) => {
   errorDiv.style.display = 'none';
   successDiv.style.display = 'none';
 
+  // 1. Validaciones
   if (password !== confirmPassword) {
     errorDiv.textContent = 'Las contraseñas no coinciden';
     errorDiv.style.display = 'block';
@@ -27,7 +25,7 @@ document.getElementById('resetForm').addEventListener('submit', async (e) => {
     return;
   }
 
-  // Obtener access token de la URL
+  // 2. Obtener access token de la URL
   const hash = window.location.hash.substring(1);
   const params = new URLSearchParams(hash);
   const accessToken = params.get('access_token');
@@ -43,6 +41,19 @@ document.getElementById('resetForm').addEventListener('submit', async (e) => {
   btnLoader.style.display = 'inline-block';
 
   try {
+    // 3. PASO NUEVO: Pedir credenciales al servidor (Vercel)
+    const configResponse = await fetch('/api/config');
+    if (!configResponse.ok) throw new Error('No se pudo obtener la configuración');
+    
+    const config = await configResponse.json();
+    const SUPABASE_URL = config.supabaseUrl;
+    const SUPABASE_KEY = config.supabaseKey;
+
+    if (!SUPABASE_URL || !SUPABASE_KEY) {
+      throw new Error('Credenciales no configuradas en el servidor');
+    }
+
+    // 4. Petición a Supabase usando las variables obtenidas
     const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
       method: 'PUT',
       headers: {
@@ -59,7 +70,7 @@ document.getElementById('resetForm').addEventListener('submit', async (e) => {
       document.getElementById('resetForm').reset();
 
       setTimeout(() => {
-        window.close();
+        window.close(); // O redirigir a tu app principal
       }, 3000);
     } else {
       const error = await response.json();
@@ -67,7 +78,8 @@ document.getElementById('resetForm').addEventListener('submit', async (e) => {
       errorDiv.style.display = 'block';
     }
   } catch (error) {
-    errorDiv.textContent = 'Error de conexión. Intenta nuevamente.';
+    console.error(error);
+    errorDiv.textContent = 'Error de conexión o configuración. Intenta nuevamente.';
     errorDiv.style.display = 'block';
   } finally {
     submitBtn.disabled = false;
