@@ -8,7 +8,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta principal
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'reset-password.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Ruta específica para reset-password

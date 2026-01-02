@@ -1,215 +1,700 @@
+/* =========================================
+   1. CONFIGURACIÓN GENERAL Y VARIABLES
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-  /* Paleta Azul Profesional */
-  --primary-color: #2563EB;       /* Azul brillante */
-  --primary-hover: #1D4ED8;       /* Azul más oscuro para hover */
-  --bg-color: #F1F5F9;            /* Gris azulado muy claro para el fondo */
-  --card-bg: #FFFFFF;
-  --text-main: #1E293B;           /* Gris oscuro casi negro */
-  --text-secondary: #64748B;      /* Gris medio */
-  --border-color: #CBD5E1;        /* Gris claro para bordes */
-  --input-focus-ring: rgba(37, 99, 235, 0.2); /* Anillo de enfoque */
-  
-  /* Estados */
-  --error-bg: #FEF2F2;
-  --error-text: #DC2626;
-  --success-bg: #F0FDF4;
-  --success-text: #16A34A;
+    /* Paleta de Colores - Fast Food App */
+    --primary: #D32F2F;
+    --primary-dark: #b71c1c;
+    --primary-gradient: linear-gradient(135deg, #D32F2F 0%, #FF5252 100%);
+    
+    /* Textos */
+    --text-dark: #2D3436;
+    --text-gray: #636E72;
+    --text-light: #B2BEC3;
+    
+    /* Fondos */
+    --bg-light: #F8F9FA;
+    --bg-input: #F3F4F6;
+    --white: #FFFFFF;
+    
+    /* Estados */
+    --success: #27AE60;
+    --success-bg: #EAFAF1;
+    --error: #E74C3C;
+    --error-bg: #FDEDEC;
+    
+    /* Sombras */
+    --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.08);
+    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--bg-color);
-  /* Un fondo sutil pero elegante */
-  background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
-  background-size: 20px 20px;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  color: var(--text-main);
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
-.container {
-  width: 100%;
-  max-width: 420px;
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
 }
 
-.card {
-  background: var(--card-bg);
-  border-radius: 12px;
-  /* Sombra suave y moderna */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-              0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  padding: 40px;
-  border: 1px solid rgba(255,255,255,0.5);
+ul {
+    list-style: none;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 32px;
+/* =========================================
+   2. ESTILOS DE LANDING PAGE (home.html / index.html)
+   ========================================= */
+
+/* Solo aplica si el body tiene la clase 'landing-body' o por defecto */
+body.landing-body {
+    background-color: var(--white);
+    overflow-x: hidden;
 }
 
-.icon-container {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  background-color: #EFF6FF; /* Fondo azul muy claro para el icono */
-  border-radius: 50%;
-  margin-bottom: 16px;
+/* --- Navbar --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    box-shadow: var(--shadow-soft);
 }
 
-.icon {
-  width: 28px;
-  height: 28px;
-  color: var(--primary-color);
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-h1 {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 8px;
-  letter-spacing: -0.025em;
+.nav-links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
 }
 
-.subtitle {
-  color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.5;
+.nav-links a {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dark);
 }
 
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.btn-download {
+    background-color: var(--primary);
+    color: var(--white) !important;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+}
+
+.btn-download:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* --- Hero Section --- */
+.hero {
+    padding: 140px 5% 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 100%);
+    min-height: 90vh;
+}
+
+.hero-text {
+    max-width: 600px;
+}
+
+.badge {
+    background-color: #FFEBEE;
+    color: var(--primary);
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.hero h1 {
+    font-size: 52px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    font-weight: 800;
+}
+
+.hero h1 span {
+    color: var(--primary);
+}
+
+.hero p {
+    font-size: 18px;
+    color: var(--text-gray);
+    margin-bottom: 40px;
+    max-width: 480px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.store-btn {
+    background: var(--text-dark);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+    border: 1px solid transparent;
+}
+
+.store-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    background: #000;
+}
+
+.store-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 10px;
+    line-height: 1.2;
+}
+
+.store-text span {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* --- Phone Mockup (CSS Puro) --- */
+.hero-image {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.phone-mockup {
+    width: 280px;
+    height: 560px;
+    background-color: var(--white);
+    border: 10px solid var(--text-dark);
+    border-radius: 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    z-index: 10;
+}
+
+.app-screen {
+    text-align: center;
+    color: white;
+}
+
+.app-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
+}
+
+/* Tarjetas Flotantes */
+.floating-card {
+    position: absolute;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 12;
+    animation: float 6s ease-in-out infinite;
+}
+
+.card-1 { top: 80px; left: -60px; }
+.card-2 { bottom: 60px; right: -40px; animation-delay: 3s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* --- Features Section --- */
+.features {
+    padding: 80px 5%;
+    background-color: var(--white);
+    text-align: center;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 50px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    padding: 30px;
+    border-radius: 24px;
+    transition: 0.3s;
+    background: var(--white);
+    border: 1px solid transparent;
+}
+
+.feature-card:hover {
+    background-color: #FFF5F5;
+    border-color: #FFEBEE;
+    transform: translateY(-5px);
+}
+
+.icon-box {
+    width: 60px;
+    height: 60px;
+    background-color: #FFEBEE;
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin: 0 auto 20px;
+}
+
+.feature-card h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: var(--text-dark);
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: var(--text-gray);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--text-dark);
+    color: var(--white);
+    padding: 50px 5%;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    color: var(--white);
+}
+
+.copyright {
+    color: rgba(255,255,255,0.4);
+    font-size: 12px;
+}
+
+/* =========================================
+   3. ESTILOS DE RESET PASSWORD (reset-password.html)
+   ========================================= */
+
+/* Fondo animado específico para la página de reset */
+body.reset-body {
+    background: linear-gradient(-45deg, #FDFBFB, #EBEDEE, #FFEBEE, #FFFFFF);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.reset-container {
+    width: 100%;
+    max-width: 400px;
+    perspective: 1000px;
+}
+
+.reset-card {
+    background: var(--white);
+    padding: 40px 35px;
+    border-radius: 30px;
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.8);
+}
+
+.reset-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: var(--primary-gradient);
+}
+
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    background: rgba(211, 47, 47, 0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    transition: transform 0.3s;
+}
+
+.reset-card:hover .icon-circle {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.icon-circle svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--primary);
+    stroke-width: 2;
+}
+
+.reset-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+
+.reset-subtitle {
+    font-size: 13px;
+    color: var(--text-gray);
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* Formularios del Reset */
 .form-group {
-  margin-bottom: 24px;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
-label {
-  display: block;
-  font-weight: 500;
-  color: var(--text-main);
-  margin-bottom: 8px;
-  font-size: 14px;
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 15px;
-  color: var(--text-main);
-  transition: all 0.2s ease;
-  background-color: #fff;
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-input::placeholder {
-  color: #94A3B8;
+.input-wrapper input {
+    width: 100%;
+    padding: 14px 45px;
+    border: 2px solid transparent;
+    background-color: var(--bg-input);
+    border-radius: 15px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s;
+    outline: none;
+    color: var(--text-dark);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
 }
 
-input:focus {
-  border-color: var(--primary-color);
-  outline: none;
-  box-shadow: 0 0 0 4px var(--input-focus-ring);
+.input-wrapper input:focus {
+    background-color: var(--white);
+    border-color: var(--primary);
+    box-shadow: 0 4px 15px rgba(211, 47, 47, 0.15);
 }
 
-.btn {
-  width: 100%;
-  padding: 12px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
+/* Iconos de Inputs */
+.input-icon-left {
+    position: absolute;
+    left: 15px;
+    color: #B0B0B0;
+    pointer-events: none;
+    transition: color 0.3s;
 }
 
-.btn:hover {
-  background-color: var(--primary-hover);
+.input-icon-right {
+    position: absolute;
+    right: 15px;
+    color: #B0B0B0;
+    cursor: pointer;
+    transition: color 0.3s;
 }
 
-.btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.input-wrapper input:focus ~ .input-icon-left {
+    color: var(--primary);
 }
 
-.error, .success {
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-size: 14px;
-  text-align: center;
+.input-icon-right:hover {
+    color: var(--primary);
+}
+
+/* Botón del Reset */
+.btn-reset {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary-gradient);
+    color: var(--white);
+    border: none;
+    border-radius: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 20px rgba(211, 47, 47, 0.2);
+}
+
+.btn-reset:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px rgba(211, 47, 47, 0.3);
+}
+
+.btn-reset:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-reset:disabled {
+    background: #E0E0E0;
+    color: #9E9E9E;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* Mensajes */
+.message-box {
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-bottom: 20px;
+    display: none;
+    text-align: left;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .error {
-  background: var(--error-bg);
-  color: var(--error-text);
-  border: 1px solid #FECACA;
+    background-color: var(--error-bg);
+    color: var(--error);
+    border: 1px solid #FEB2B2;
 }
 
 .success {
-  background: var(--success-bg);
-  color: var(--success-text);
-  border: 1px solid #BBF7D0;
+    background-color: var(--success-bg);
+    color: var(--success);
+    border: 1px solid #9AE6B4;
 }
 
-.footer {
-  margin-top: 24px;
-  text-align: center;
-}
-
-.footer a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 14px;
-  transition: color 0.2s;
-}
-
-.footer a:hover {
-  color: var(--primary-color);
-  text-decoration: underline;
-}
-
-/* Animación del Loader que faltaba */
+/* Loader */
 .loader {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ffffff;
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
 }
 
-@keyframes rotation {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.reset-footer {
+    margin-top: 25px;
+    font-size: 12px;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .card {
-    padding: 24px;
-    box-shadow: none;
-    background: transparent;
-    border: none;
-  }
-  body {
-    background: white;
-    align-items: flex-start;
-  }
+.reset-footer a {
+    color: var(--text-gray);
+    font-weight: 500;
+    border-bottom: 1px dashed transparent;
+}
+
+.reset-footer a:hover {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+/* =========================================
+   4. RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+    /* Hero */
+    .hero {
+        flex-direction: column;
+        padding-top: 120px;
+        text-align: center;
+        gap: 60px;
+    }
+    
+    .hero h1 { font-size: 38px; }
+    .hero-buttons { justify-content: center; }
+    .floating-card { display: none; } /* Ocultar en móviles */
+    .nav-links { display: none; } /* Menú simple */
+    
+    /* Reset Card */
+    .reset-card { padding: 30px 20px; }
+}
+
+/* =========================================
+   5. ESTILOS AVANZADOS DE VALIDACIÓN (Nuevo)
+   ========================================= */
+
+/* Indicador de Fortaleza */
+.strength-indicator {
+    display: flex;
+    gap: 5px;
+    margin-top: 8px;
+    height: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.strength-indicator.active {
+    opacity: 1;
+}
+
+.strength-bar {
+    flex: 1;
+    background-color: #E0E0E0;
+    border-radius: 2px;
+    transition: background-color 0.3s;
+}
+
+/* Colores de las barras según nivel */
+.strength-weak .strength-bar:nth-child(1) { background-color: #E74C3C; }
+.strength-fair .strength-bar:nth-child(-n+2) { background-color: #F1C40F; }
+.strength-good .strength-bar:nth-child(-n+3) { background-color: #3498DB; }
+.strength-strong .strength-bar { background-color: #27AE60; }
+
+.strength-text {
+    font-size: 11px;
+    margin-top: 5px;
+    text-align: right;
+    font-weight: 500;
+    height: 15px; /* Espacio reservado */
+}
+
+.strength-weak .strength-text { color: #E74C3C; }
+.strength-fair .strength-text { color: #F1C40F; }
+.strength-good .strength-text { color: #3498DB; }
+.strength-strong .strength-text { color: #27AE60; }
+
+/* Indicador de Coincidencia */
+.match-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.match-indicator.active {
+    opacity: 1;
+}
+
+.match-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #E0E0E0;
+}
+
+.match-indicator.match .match-dot { background-color: #27AE60; }
+.match-indicator.match { color: #27AE60; }
+
+.match-indicator.no-match .match-dot { background-color: #E74C3C; }
+.match-indicator.no-match { color: #E74C3C; }
+
+/* Estados de Input (Valid/Invalid) */
+input.valid {
+    border-color: #27AE60 !important;
+    background-color: #F0FFF4 !important;
+}
+
+input.valid:focus {
+    box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.1) !important;
+}
+
+input.invalid {
+    border-color: #E74C3C !important;
+    background-color: #FFF5F5 !important;
+}
+
+input.invalid:focus {
+    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1) !important;
 }
