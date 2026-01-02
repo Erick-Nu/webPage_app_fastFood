@@ -41,34 +41,57 @@ async function initSupabase() {
     // B. Inicializar Cliente
     supabaseClient = supabase.createClient(config.supabaseUrl, config.supabaseKey);
 
-    // C. ESCUCHADOR DE ESTADO (La parte clave para solucionar tu error)
-    // Supabase nos avisará cuando procese el token de la URL
+    // --- NUEVO BLOQUE: INTERCAMBIO DE CÓDIGO (PKCE) ---
+    // Detectamos si la URL tiene ?code=... y lo canjeamos manualmente
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (code) {
+        console.log("Código PKCE detectado, intercambiando...");
+        const { data, error } = await supabaseClient.auth.exchangeCodeForSession(code);
+        
+        if (error) {
+            console.error("Error al canjear código:", error);
+            throw new Error("El enlace es inválido o ha expirado: " + error.message);
+        }
+        console.log("Intercambio exitoso, sesión establecida.");
+    }
+    // --------------------------------------------------
+
+    // C. ESCUCHADOR DE ESTADO
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       console.log("Evento Auth:", event);
 
       if (event === 'SIGNED_IN' || event === 'PASSWORD_RECOVERY' || session) {
-        // ¡Éxito! Tenemos sesión. Habilitamos el formulario.
         setFormState(true);
         errorDiv.style.display = 'none';
       } else if (event === 'SIGNED_OUT') {
-        // No hay sesión (link inválido o expirado)
         setFormState(false);
-        errorDiv.textContent = 'Enlace inválido o expirado. Solicita uno nuevo.';
-        errorDiv.style.display = 'block';
-        btnText.textContent = "Enlace inválido";
+        // Solo mostramos error si NO estamos en proceso de carga inicial (code exchange)
+        if (!code) { 
+            errorDiv.textContent = 'Enlace inválido o expirado. Solicita uno nuevo.';
+            errorDiv.style.display = 'block';
+            btnText.textContent = "Enlace inválido";
+        }
       }
     });
 
-    // Verificación manual por si el evento ya pasó
+    // D. Verificación final manual
     const { data: { session } } = await supabaseClient.auth.getSession();
     if (session) {
         setFormState(true);
+    } else if (!code) {
+        // Si no hay sesión Y no había código en la URL, mostramos error
+        errorDiv.textContent = 'Enlace no válido. Asegúrate de usar el link de tu correo.';
+        errorDiv.style.display = 'block';
+        btnText.textContent = "Enlace requerido";
     }
 
   } catch (error) {
     console.error("Error init:", error);
-    errorDiv.textContent = 'Error de conexión. Recarga la página.';
+    errorDiv.textContent = error.message || 'Error de conexión. Recarga la página.';
     errorDiv.style.display = 'block';
+    btnText.textContent = "Error";
   }
 }
 
@@ -97,14 +120,12 @@ document.getElementById('resetForm').addEventListener('submit', async (e) => {
   btnLoader.style.display = 'inline-block';
 
   try {
-    // D. Verificar sesión una última vez antes de enviar
     const { data: { session } } = await supabaseClient.auth.getSession();
     
     if (!session) {
-        throw new Error("Auth session missing. El enlace ha expirado.");
+        throw new Error("La sesión ha expirado. Por favor solicita un nuevo enlace.");
     }
 
-    // E. Actualizar contraseña
     const { data, error } = await supabaseClient.auth.updateUser({
       password: password
     });
@@ -115,8 +136,8 @@ document.getElementById('resetForm').addEventListener('submit', async (e) => {
     successDiv.style.display = 'block';
     document.getElementById('resetForm').reset();
 
+    // Feedback visual antes de cerrar
     setTimeout(() => {
-        // Cierra la ventana o redirige
         window.close();
     }, 3000);
 
